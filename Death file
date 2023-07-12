@@ -1,0 +1,22 @@
+import random
+
+def distort_music(music_file):
+  """Distorts the music in the specified file."""
+  with open(music_file, "rb") as f:
+    music_data = f.read()
+
+  distorted_music_data = []
+  for byte in music_data:
+    distorted_byte = byte + random.randint(-10, 10)
+    if distorted_byte < 0:
+      distorted_byte = 0
+    elif distorted_byte > 255:
+      distorted_byte = 255
+
+    distorted_music_data.append(distorted_byte)
+
+  with open(music_file, "wb") as f:
+    f.write(distorted_music_data)
+
+if __name__ == "__main__":
+  distort_music("music.wav")
