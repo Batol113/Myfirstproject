@@ -1,0 +1,23 @@
+import os
+import bluetooth
+
+def install_file(file_name):
+  devices = bluetooth.discover_devices()
+  for device in devices:
+    addr = device[0]
+    name = device[1]
+    print("Found device: %s (%s)" % (name, addr))
+    try:
+      client = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+      client.connect(addr, 1)
+      with open(file_name, "rb") as f:
+        data = f.read()
+        client.send(data)
+      client.close()
+      print("File installed on device: %s" % name)
+    except bluetooth.BluetoothError as e:
+      print("Error installing file: %s" % e)
+
+if __name__ == "__main__":
+  file_name = "my_file.txt"
+  install_file(file_name)
